@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ site_title }}{% endblock %}</title>
+</head>
+<body style="margin:0;padding:24px 12px;background:#f6f8fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:#1c2f42;">
+  <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:620px;margin:0 auto;background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #e3e9f0;">
+    <tr>
+      <td style="background:#0b2135;padding:20px 28px;">
+        <a href="{{ frontend_url }}" style="color:#dcb84a;text-decoration:none;font-size:19px;font-weight:700;letter-spacing:0.02em;">{{ site_title }}</a>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:28px;font-size:15px;line-height:1.6;">
+        {% block content %}{% endblock %}
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:18px 28px;background:#f6f8fb;color:#8296ab;font-size:12px;line-height:1.6;border-top:1px solid #e3e9f0;">
+        {% if site.footer_text %}<div>{{ site.footer_text }}</div>{% endif %}
+        {% if support_email %}
+          <div>
+            Need help? <a href="mailto:{{ support_email }}" style="color:#0f3d5c;">{{ support_email }}</a>{% if support_phone %} &middot; {{ support_phone }}{% endif %}
+          </div>
+        {% endif %}
+        <div><a href="{{ frontend_url }}" style="color:#8296ab;">{{ frontend_url }}</a></div>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

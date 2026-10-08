@@ -1,0 +1,12 @@
+# Python 3.10-3.12 (Django 5.0 does not support Python 3.13+).
+# Django 5.0 is the newest release that supports MariaDB 10.4 / MySQL 5.7+,
+# which is what XAMPP's bundled server ships. Django 5.1+ requires MariaDB 10.5+
+# and Django 6 requires MariaDB 10.11+ / MySQL 8.4+.
+Django==5.0.14
+djangorestframework==3.16.1
+django-cors-headers==4.9.0
+mysqlclient==2.3.0
+Pillow==12.3.0
+python-dotenv==1.2.4
+razorpay==2.0.1
+

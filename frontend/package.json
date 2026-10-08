@@ -1,0 +1,21 @@
+{
+  "name": "skystay-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Dynamic hotel booking frontend — React + Vite, fully driven by the Django CMS API.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.9.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.4",
+    "vite": "^7.1.9"
+  }
+}

@@ -1,0 +1,26 @@
+Hello {{ booking.guest_name }},
+
+Thank you for choosing {{ site_title }}. Your room is reserved.
+
+  PAYMENT PENDING — this booking is paid in cash at the hotel desk.
+  Amount due at check-in: {{ currency_symbol }}{{ booking.total_price }}
+
+  Reference:  {{ booking.reference }}
+  Hotel:      {{ hotel.name }} ({{ hotel.location }})
+  Room:       {{ room.name }}
+  Check-in:   {{ booking.check_in }}{% if site.default_check_in_time %} from {{ site.default_check_in_time }}{% endif %}
+
+  Check-out:  {{ booking.check_out }}{% if site.default_check_out_time %} by {{ site.default_check_out_time }}{% endif %}
+
+  Guests:     {{ booking.guests }}
+  Rooms:      {{ booking.rooms_count }}
+  Nights:     {{ booking.nights }}
+  Total:      {{ currency_symbol }}{{ booking.total_price }}
+
+{% if booking.special_requests %}Your requests: {{ booking.special_requests }}
+
+{% endif %}Manage this booking: {{ frontend_url }}/dashboard
+{% if support_email %}Questions? Email {{ support_email }}{% if support_phone %} or call {{ support_phone }}{% endif %}.
+{% endif %}We look forward to hosting you.
+
+— {{ site_title }}

@@ -1,0 +1,133 @@
+{% comment %}
+Leaflet location picker (see content/widgets.py).
+
+Writes the chosen point straight into the model's latitude/longitude inputs, so
+saving the form persists exactly what the map shows. Search uses OpenStreetMap's
+Nominatim geocoder, which needs no API key.
+{% endcomment %}
+<div class="skystay-map">
+  <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+    <input type="search" id="skystay-map-search" class="vTextField"
+           style="max-width:320px;"
+           placeholder="Search an address, city or hotel…" autocomplete="off"
+           aria-label="Search for a location">
+    <button type="button" class="button" id="skystay-map-find">Search</button>
+  </div>
+  <div id="{{ widget.attrs.id|default:'skystay-location-map' }}"
+       style="height:340px;border:1px solid #ddd;border-radius:8px;"></div>
+  <p class="help" id="skystay-map-status">
+    Click the map, drag the marker or search above — latitude and longitude fill in automatically.
+  </p>
+</div>
+<script>
+(function () {
+  function init() {
+    if (window.__skystayMapReady || typeof L === 'undefined') return;
+    var latInput = document.getElementById('{{ widget.lat_input_id }}');
+    var lngInput = document.getElementById('{{ widget.lng_input_id }}');
+    var canvas = document.getElementById('{{ widget.attrs.id|default:"skystay-location-map" }}');
+    if (!canvas || !latInput || !lngInput) return;
+    window.__skystayMapReady = true;
+
+    var status = document.getElementById('skystay-map-status');
+    var marker = null;
+
+    function setStatus(text) { if (status) status.textContent = text; }
+
+    function initialPoint() {
+      var lat = parseFloat(latInput.value);
+      var lng = parseFloat(lngInput.value);
+      return (isNaN(lat) || isNaN(lng)) ? null : [lat, lng];
+    }
+
+    var point = initialPoint();
+    var map = L.map(canvas, { scrollWheelZoom: false })
+      .setView(point || [20, 20], point ? 14 : 2);
+    // OSM's tile usage policy requires the canonical host (no a/b/c subdomains),
+    // a valid Referer and visible attribution. The document-level Referrer-Policy
+    // is set in Django settings (SECURE_REFERRER_POLICY); referrerPolicy here makes
+    // the requirement explicit on the tile requests themselves.
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      referrerPolicy: 'strict-origin-when-cross-origin',
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors · ' +
+        '<a href="https://www.openstreetmap.org/fixthemap" target="_blank" rel="noopener">Report a map issue</a>',
+    }).addTo(map);
+
+    function write(lat, lng) {
+      latInput.value = lat.toFixed(6);
+      lngInput.value = lng.toFixed(6);
+      setStatus('Location set to ' + lat.toFixed(6) + ', ' + lng.toFixed(6) + '. Remember to save.');
+    }
+
+    function place(lat, lng, zoom) {
+      if (!marker) {
+        marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+        marker.on('dragend', function () {
+          var p = marker.getLatLng();
+          write(p.lat, p.lng);
+        });
+      } else {
+        marker.setLatLng([lat, lng]);
+      }
+      if (zoom) map.setView([lat, lng], zoom);
+    }
+
+    if (point) place(point[0], point[1]);
+
+    map.on('click', function (event) {
+      place(event.latlng.lat, event.latlng.lng);
+      write(event.latlng.lat, event.latlng.lng);
+    });
+
+    function syncFromInputs() {
+      var next = initialPoint();
+      if (next) place(next[0], next[1]);
+    }
+    latInput.addEventListener('change', syncFromInputs);
+    lngInput.addEventListener('change', syncFromInputs);
+
+    var search = document.getElementById('skystay-map-search');
+    var button = document.getElementById('skystay-map-find');
+
+    function runSearch() {
+      var query = (search.value || '').trim();
+      if (!query) return;
+      setStatus('Searching…');
+      fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(query))
+        .then(function (response) { return response.json(); })
+        .then(function (rows) {
+          if (!rows || !rows.length) {
+            setStatus('No match found — try a more specific search, or click the map.');
+            return;
+          }
+          var hit = rows[0];
+          var lat = parseFloat(hit.lat);
+          var lng = parseFloat(hit.lon);
+          place(lat, lng, 15);
+          write(lat, lng);
+        })
+        .catch(function () {
+          setStatus('Search unavailable right now — click the map to set the point instead.');
+        });
+    }
+
+    if (button) button.addEventListener('click', runSearch);
+    if (search) {
+      search.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          runSearch();
+        }
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>

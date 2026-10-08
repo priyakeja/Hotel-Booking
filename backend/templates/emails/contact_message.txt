@@ -1,0 +1,19 @@
+New contact message — {{ message.subject }}
+
+{{ message.name }} sent a message through the {{ site_title }} contact form.
+
+Name:              {{ message.name }}
+Email:             {{ message.email }}
+Phone:             {{ message.phone|default:"—" }}
+Booking reference: {{ message.booking_reference|default:"—" }}
+Subject:           {{ message.subject }}
+Received:          {{ message.created_at }}
+
+Message
+-------
+{{ message.message }}
+-------
+{% if admin_url %}
+Open in the admin: {{ admin_url }}
+{% endif %}
+Reply directly to this email to answer {{ message.name }}.

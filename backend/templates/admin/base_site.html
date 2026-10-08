@@ -1,0 +1,24 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{# Project-level template: the DIRS loader runs before app templates, so this
+   replaces Django's admin/base_site.html and the SkyStay mark wins the tab. #}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <link rel="icon" type="image/svg+xml" href="{% static 'branding/favicon.svg' %}">
+  <link rel="alternate icon" type="image/png" sizes="32x32" href="{% static 'branding/favicon-32.png' %}">
+  <link rel="shortcut icon" href="{% static 'branding/favicon.ico' %}">
+  <link rel="apple-touch-icon" href="{% static 'branding/apple-touch-icon.png' %}">
+{% endblock %}
+
+{% block branding %}
+<div id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></div>
+{% if user.is_anonymous %}
+  {% include "admin/color_theme_toggle.html" %}
+{% endif %}
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

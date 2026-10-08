@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SkyStay — Backend</title>
+  <style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f3d5c, #1b7a8c);
+      color: #10202b;
+    }
+    .card {
+      width: 100%;
+      max-width: 34rem;
+      background: #fff;
+      border-radius: 14px;
+      padding: 2.25rem;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, .28);
+    }
+    h1 { margin: 0 0 .35rem; font-size: 1.65rem; }
+    p.lead { margin: 0 0 1.75rem; color: #5a6b76; line-height: 1.5; }
+    .links { display: grid; gap: .75rem; }
+    a.action {
+      display: block;
+      padding: .85rem 1.1rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      border: 1px solid #dfe6ea;
+      color: #0f3d5c;
+      background: #f6f9fb;
+      transition: background .15s ease, transform .15s ease;
+    }
+    a.action:hover { background: #e7f1f7; transform: translateY(-1px); }
+    a.action span { display: block; font-weight: 400; font-size: .82rem; color: #64757f; margin-top: .15rem; }
+    a.action.primary { background: #0f3d5c; border-color: #0f3d5c; color: #fff; }
+    a.action.primary:hover { background: #14527a; }
+    a.action.primary span { color: #c6dded; }
+    footer { margin-top: 1.75rem; font-size: .78rem; color: #8397a2; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>SkyStay backend is running</h1>
+    <p class="lead">
+      This address serves the Django admin and the REST API. The customer facing
+      site is the React app, which runs on its own port.
+    </p>
+    <div class="links">
+      <a class="action primary" href="{{ frontend_url }}">
+        Open the SkyStay website
+        <span>{{ frontend_url }}</span>
+      </a>
+      <a class="action" href="/admin/">
+        Django admin (CMS)
+        <span>Manage hotels, rooms, bookings and all page content</span>
+      </a>
+      <a class="action" href="/api/">
+        REST API index
+        <span>JSON list of every public endpoint</span>
+      </a>
+      <a class="action" href="/api/health/">
+        Health check
+        <span>Reports API status and database connectivity</span>
+      </a>
+    </div>
+    <footer>If the website link does not open, start it with <code>npm run dev</code> inside <code>frontend/</code>.</footer>
+  </main>
+</body>
+</html>

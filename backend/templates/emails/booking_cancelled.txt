@@ -1,0 +1,16 @@
+Hello {{ booking.guest_name }},
+
+Your reservation {{ booking.reference }} has been cancelled and the room is
+available for other guests again.
+
+  Hotel:      {{ hotel.name }} ({{ hotel.location }})
+  Room:       {{ room.name }}
+  Was due:    {{ booking.check_in }} → {{ booking.check_out }}
+  Value:      {{ currency_symbol }}{{ booking.total_price }}
+
+Nothing else is needed from you. If this was a mistake, you can book the same
+room again here: {{ frontend_url }}/hotels/{{ hotel.slug }}
+{% if support_email %}
+Need help? Email {{ support_email }}{% if support_phone %} or call {{ support_phone }}{% endif %}.
+{% endif %}
+— {{ site_title }}

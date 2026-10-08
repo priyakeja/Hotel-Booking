@@ -1,0 +1,49 @@
+{% extends 'emails/base.html' %}
+{% block title %}New contact message — {{ message.subject }}{% endblock %}
+{% block content %}
+  <h1 style="margin:0 0 10px;font-size:22px;color:#0c1a29;">New contact message</h1>
+  <p style="margin:0 0 20px;color:#5f7288;">
+    {{ message.name }} sent a message through the {{ site_title }} contact form.
+  </p>
+
+  <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 20px;font-size:14px;">
+    <tr>
+      <td style="padding:9px 0;color:#8296ab;">Name</td>
+      <td style="padding:9px 0;text-align:right;font-weight:600;">{{ message.name }}</td>
+    </tr>
+    <tr>
+      <td style="padding:9px 0;color:#8296ab;border-top:1px solid #eef2f7;">Email</td>
+      <td style="padding:9px 0;text-align:right;border-top:1px solid #eef2f7;">
+        <a href="mailto:{{ message.email }}" style="color:#0f3d5c;">{{ message.email }}</a>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:9px 0;color:#8296ab;border-top:1px solid #eef2f7;">Phone</td>
+      <td style="padding:9px 0;text-align:right;border-top:1px solid #eef2f7;">
+        {% if message.phone %}<a href="tel:{{ message.phone }}" style="color:#0f3d5c;">{{ message.phone }}</a>{% else %}—{% endif %}
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:9px 0;color:#8296ab;border-top:1px solid #eef2f7;">Booking reference</td>
+      <td style="padding:9px 0;text-align:right;border-top:1px solid #eef2f7;">{{ message.booking_reference|default:"—" }}</td>
+    </tr>
+    <tr>
+      <td style="padding:9px 0;color:#8296ab;border-top:1px solid #eef2f7;">Subject</td>
+      <td style="padding:9px 0;text-align:right;border-top:1px solid #eef2f7;">{{ message.subject }}</td>
+    </tr>
+    <tr>
+      <td style="padding:9px 0;color:#8296ab;border-top:1px solid #eef2f7;">Received</td>
+      <td style="padding:9px 0;text-align:right;border-top:1px solid #eef2f7;">{{ message.created_at }}</td>
+    </tr>
+  </table>
+
+  <div style="padding:16px;border-radius:12px;background:#f6f8fb;border:1px solid #e3e9f0;white-space:pre-wrap;">{{ message.message }}</div>
+
+  {% if admin_url %}
+    <p style="margin:22px 0 0;">
+      <a href="{{ admin_url }}" style="display:inline-block;padding:11px 20px;border-radius:10px;background:#c9a227;color:#241c02;font-weight:700;text-decoration:none;">
+        Open in the admin
+      </a>
+    </p>
+  {% endif %}
+{% endblock %}

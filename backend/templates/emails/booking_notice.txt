@@ -1,0 +1,16 @@
+New booking received on {{ site_title }}.
+
+  Reference:  {{ booking.reference }}
+  Guest:      {{ booking.guest_name }} <{{ booking.guest_email }}>{% if booking.guest_phone %} / {{ booking.guest_phone }}{% endif %}
+
+  Hotel:      {{ hotel.name }} ({{ hotel.location }})
+  Room:       {{ room.name }} × {{ booking.rooms_count }}
+  Dates:      {{ booking.check_in }} → {{ booking.check_out }} ({{ booking.nights }} night{{ booking.nights|pluralize }})
+
+  Guests:     {{ booking.guests }}
+  Value:      {{ currency_symbol }}{{ booking.total_price }}
+  Status:     {{ booking.get_status_display }}
+
+{% if booking.special_requests %}Guest requests: {{ booking.special_requests }}
+{% endif %}{% if admin_url %}Confirm or update it in the admin: {{ admin_url }}
+{% endif %}

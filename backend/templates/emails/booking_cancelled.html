@@ -1,0 +1,35 @@
+{% extends 'emails/base.html' %}
+{% block title %}Booking cancelled — {{ booking.reference }}{% endblock %}
+{% block content %}
+  <h1 style="margin:0 0 10px;font-size:22px;color:#0c1a29;">Your booking was cancelled</h1>
+  <p style="margin:0 0 20px;color:#5f7288;">
+    Hello {{ booking.guest_name }}, reservation <strong>{{ booking.reference }}</strong> has been
+    cancelled and the room is available for other guests again. Nothing else is needed from you.
+  </p>
+
+  <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="font-size:14px;">
+    <tr>
+      <td style="padding:9px 0;color:#8296ab;">Hotel</td>
+      <td style="padding:9px 0;text-align:right;font-weight:600;">{{ hotel.name }}<div style="color:#8296ab;font-weight:400;font-size:13px;">{{ hotel.location }}</div></td>
+    </tr>
+    <tr>
+      <td style="padding:9px 0;color:#8296ab;border-top:1px solid #eef2f7;">Room</td>
+      <td style="padding:9px 0;text-align:right;border-top:1px solid #eef2f7;">{{ room.name }}</td>
+    </tr>
+    <tr>
+      <td style="padding:9px 0;color:#8296ab;border-top:1px solid #eef2f7;">Was due</td>
+      <td style="padding:9px 0;text-align:right;border-top:1px solid #eef2f7;">{{ booking.check_in }} → {{ booking.check_out }}</td>
+    </tr>
+    <tr>
+      <td style="padding:9px 0;color:#8296ab;border-top:1px solid #eef2f7;">Value</td>
+      <td style="padding:9px 0;text-align:right;border-top:1px solid #eef2f7;">{{ currency_symbol }}{{ booking.total_price }}</td>
+    </tr>
+  </table>
+
+  <p style="margin:22px 0 14px;color:#5f7288;font-size:14px;">
+    Changed your mind? The same room can be booked again in a couple of taps.
+  </p>
+  <a href="{{ frontend_url }}/hotels/{{ hotel.slug }}" style="display:inline-block;padding:12px 22px;border-radius:999px;background:#0b2135;color:#ffffff;text-decoration:none;font-weight:600;">
+    Rebook this hotel
+  </a>
+{% endblock %}
